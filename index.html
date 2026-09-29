@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lili's チャレンジ企画ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#F5F3FB; --bg2:#EEF0FA; --bg3:#F8EEF6;
+    --surface:#FFFFFF; --surface2:#F8F7FC;
+    --ink:#3A3742; --body:#4A4656; --muted:#77728A; --faint:#9A95AC;
+    --pink:#6E63A6; --pink-soft:#F1EEF9; --grad2:#967FC3;
+    --blue:#5C6FA8; --blue-soft:#E6EAF7; --blue-main:#A9B6E6;
+    --navy:#6E63A6; --accent:#E2AFD6; --gold:#C3AF88;
+    --line:#E4E1F0; --line2:#EEECF6;
+    --done:#A5A1B6;
+    --shadow:0 1px 2px rgba(110,99,166,.06),0 10px 26px rgba(125,145,197,.12);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg1:#1A1824; --bg2:#1C1B28; --bg3:#221D2A;
+      --surface:#262434; --surface2:#2E2B3F;
+      --ink:#EDEBF5; --body:#CBC7DA; --muted:#9A95AE; --faint:#77728C;
+      --pink:#B4A6E6; --pink-soft:#332E48; --grad2:#8C79C0;
+      --blue:#A9B6E6; --blue-soft:#2C3350; --blue-main:#A9B6E6;
+      --navy:#8C7FD0; --accent:#E2AFD6; --gold:#C3AF88;
+      --line:#3A3650; --line2:#312E45; --done:#6E6A84;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px rgba(0,0,0,.4);
+    }
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--body);
+    background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 48%,var(--bg3) 100%);
+    background-attachment:fixed;
+    font-family:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","Yu Gothic",YuGothic,"Hiragino Sans","Noto Sans JP",sans-serif;
+    line-height:1.78; -webkit-font-smoothing:antialiased;
+    padding:clamp(16px,4vw,40px) 16px 90px;
+  }
+  .wrap{max-width:720px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-weight:900;font-size:22px;letter-spacing:.02em;color:var(--ink)}
+  .brand .dots{display:inline-flex;gap:4px}
+  .brand .dots i{width:7px;height:7px;border-radius:50%;display:block}
+  .brand .dots i:first-child{background:var(--accent)}
+  .brand .dots i:last-child{background:var(--blue-main)}
+  .brand small{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.16em}
+  .g-sec a{color:var(--blue);font-weight:700}
+
+  header{margin-bottom:20px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;letter-spacing:.14em;font-weight:700;
+    color:var(--pink);background:var(--pink-soft);
+    padding:6px 13px;border-radius:100px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pink)}
+  h1{
+    font-size:clamp(22px,5.2vw,31px);line-height:1.4;margin:0 0 10px;
+    font-weight:800;letter-spacing:.01em;text-wrap:balance;color:var(--ink);
+  }
+  .dates{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+  .date-chip{
+    font-size:13.5px;font-weight:700;color:var(--ink);
+    background:var(--surface);border:1px solid var(--line);
+    padding:8px 14px;border-radius:12px;box-shadow:var(--shadow);
+  }
+  .date-chip b{color:var(--pink)}
+  .lead{color:var(--muted);font-size:14.5px;margin:14px 0 0}
+
+  /* タブ */
+  .tabs{
+    display:flex;gap:6px;margin:22px 0 20px;
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:6px;box-shadow:var(--shadow);position:sticky;top:10px;z-index:10;
+  }
+  .tab{
+    flex:1;border:none;background:none;font-family:inherit;cursor:pointer;
+    font-size:13.5px;font-weight:800;color:var(--muted);
+    padding:10px 4px;border-radius:10px;transition:all .2s;letter-spacing:.02em;
+  }
+  .tab:hover{color:var(--pink)}
+  .tab.on{background:linear-gradient(135deg,var(--pink),var(--grad2));color:#fff}
+  .tab:focus-visible{outline:2.5px solid var(--pink);outline-offset:2px}
+  .pane{display:none}
+  .pane.on{display:block}
+
+  .progress-card{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;padding:16px 18px;margin:0 0 26px;box-shadow:var(--shadow);
+  }
+  .progress-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+  .progress-label{font-size:14px;font-weight:700;color:var(--ink)}
+  .progress-count{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .progress-count b{color:var(--pink);font-size:20px}
+  .bar{height:10px;border-radius:100px;background:var(--line2);overflow:hidden}
+  .bar-fill{height:100%;width:0;border-radius:100px;
+    background:linear-gradient(90deg,var(--pink),var(--blue-main));
+    transition:width .45s cubic-bezier(.2,.7,.2,1)}
+  .cheer{font-size:13px;color:var(--pink);font-weight:700;margin-top:10px;min-height:18px}
+
+  .step{margin:0 0 30px}
+  .step-head{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+  .step-num{
+    flex:0 0 auto;min-width:30px;height:30px;border-radius:10px;padding:0 7px;
+    display:grid;place-items:center;font-weight:800;font-size:14px;
+    color:#fff;background:var(--pink);
+  }
+  .step-title{font-size:17px;font-weight:800;margin:0;color:var(--ink)}
+  .step-when{font-size:12.5px;color:var(--faint);font-weight:600;margin-top:1px}
+
+  .task{
+    display:flex;gap:13px;align-items:flex-start;
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;padding:14px 15px;margin-bottom:9px;
+    cursor:pointer;transition:border-color .2s,background .2s,transform .06s;box-shadow:var(--shadow);
+  }
+  .task:hover{border-color:var(--pink)}
+  .task:active{transform:scale(.996)}
+  .task:focus-visible{outline:2.5px solid var(--pink);outline-offset:2px}
+  .box{
+    flex:0 0 auto;width:24px;height:24px;border-radius:8px;margin-top:2px;
+    border:2px solid var(--line);background:var(--surface2);
+    display:grid;place-items:center;transition:all .2s;
+  }
+  .box svg{width:14px;height:14px;stroke:#fff;stroke-width:3.2;fill:none;
+    stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .25s .05s}
+  .t-body{flex:1;min-width:0}
+  .t-do{font-size:15.5px;font-weight:700;color:var(--ink);transition:color .2s}
+  .t-why{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.72}
+  .t-why::before{content:"なぜ　";font-weight:700;color:var(--pink);font-size:12px}
+  .t-eg{font-size:12.5px;color:var(--faint);margin-top:6px;padding-left:11px;border-left:2px solid var(--line);white-space:pre-line}
+  .t-note{
+    font-size:12.5px;color:var(--body);margin-top:8px;line-height:1.72;
+    background:var(--pink-soft);border-radius:10px;padding:9px 12px;
+  }
+  .t-note b{color:var(--pink)}
+  .t-note::before{
+    content:"ポイント";display:block;font-size:11px;font-weight:800;
+    letter-spacing:.04em;color:var(--pink);margin-bottom:3px;
+  }
+  .t-ref{
+    display:inline-block;font-size:11.5px;font-weight:800;color:var(--blue);
+    background:var(--blue-soft);border-radius:100px;padding:2px 10px;margin-top:7px;cursor:pointer;
+  }
+  .t-ref:hover{text-decoration:underline}
+
+  .task.done{background:var(--blue-soft);border-color:transparent}
+  .task.done .box{background:var(--pink);border-color:var(--pink)}
+  .task.done .box svg{stroke-dashoffset:0}
+  .task.done .t-do{color:var(--done);text-decoration:line-through;text-decoration-thickness:1.5px}
+  .task.done .t-why,.task.done .t-eg,.task.done .t-note,.task.done .t-ref{opacity:.5}
+
+  /* 指南書 */
+  .g-sec{
+    background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:20px 20px 16px;margin-bottom:18px;box-shadow:var(--shadow);
+  }
+  .g-sec h2{
+    font-size:17px;font-weight:800;color:var(--ink);margin:0 0 4px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .g-num{
+    flex:0 0 auto;width:28px;height:28px;border-radius:9px;
+    display:grid;place-items:center;font-weight:800;font-size:13px;
+    color:#fff;background:var(--navy);
+  }
+  .g-sub{font-size:12.5px;color:var(--faint);font-weight:600;margin:0 0 12px;padding-left:38px}
+  .g-sec p{font-size:14px;margin:10px 0}
+  .g-sec ul{margin:8px 0;padding-left:20px}
+  .g-sec li{font-size:13.5px;margin-bottom:6px}
+  .g-sec b{color:var(--ink)}
+
+  .room{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--surface2);border-radius:12px;padding:12px 14px;margin-bottom:8px;
+  }
+  .room-tag{
+    flex:0 0 auto;font-size:11px;font-weight:800;color:#fff;border-radius:8px;
+    padding:3px 10px;margin-top:2px;letter-spacing:.05em;
+  }
+  .room-tag.omote{background:var(--pink)}
+  .room-tag.kobetsu{background:var(--blue)}
+  .room-tag.ura{background:var(--navy)}
+  .room-body{font-size:13px}
+  .room-body b{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+
+  .flow{
+    display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+    background:var(--surface2);border-radius:12px;padding:12px 14px;margin:10px 0 4px;
+  }
+  .flow span{
+    font-size:12px;font-weight:700;color:var(--ink);
+    background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:5px 12px;
+  }
+  .flow i{font-style:normal;color:var(--faint);font-size:12px}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 6px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{font-size:12px;color:var(--faint);font-weight:800;letter-spacing:.04em;white-space:nowrap}
+  td b{color:var(--ink)}
+  .tbl-wrap{overflow-x:auto}
+  td .chip{
+    display:inline-block;font-size:11.5px;font-weight:800;color:var(--navy);
+    background:var(--blue-soft);border-radius:100px;padding:2px 10px;white-space:nowrap;
+  }
+
+  .tpl{
+    background:var(--surface2);border:1px solid var(--line);border-radius:12px;
+    padding:14px 15px;margin:12px 0;position:relative;
+  }
+  .tpl-title{
+    font-size:12px;font-weight:800;color:var(--pink);letter-spacing:.04em;margin-bottom:8px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .tpl-copy{
+    font-family:inherit;font-size:11.5px;font-weight:800;color:var(--blue);
+    background:var(--blue-soft);border:none;border-radius:100px;padding:4px 12px;cursor:pointer;
+  }
+  .tpl-copy:hover{opacity:.8}
+  .tpl pre{
+    margin:0;font-family:inherit;font-size:13px;line-height:1.85;color:var(--body);
+    white-space:pre-wrap;word-break:break-word;
+  }
+  .tpl-use{font-size:11.5px;color:var(--faint);margin-top:8px}
+  .tpl-use::before{content:"使いどころ　";font-weight:800;color:var(--blue)}
+
+  .warn{
+    background:var(--pink-soft);border-radius:12px;padding:12px 14px;margin:10px 0;
+    font-size:13px;
+  }
+  .warn b{color:var(--pink)}
+
+  .shikake{counter-reset:sk}
+  .shikake .sk{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:12px 0;border-bottom:1px solid var(--line2);
+  }
+  .shikake .sk:last-child{border-bottom:none}
+  .sk::before{
+    counter-increment:sk;content:counter(sk);
+    flex:0 0 auto;width:26px;height:26px;border-radius:50%;
+    display:grid;place-items:center;font-weight:800;font-size:13px;
+    color:#fff;background:linear-gradient(135deg,var(--pink),var(--grad2));margin-top:2px;
+  }
+  .sk-body{font-size:13.5px}
+  .sk-body b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+  .sk-real{font-size:12px;color:var(--faint);margin-top:4px;padding-left:10px;border-left:2px solid var(--line)}
+  .sk-real::before{content:"実例　";font-weight:800;color:var(--blue)}
+
+  footer{margin-top:34px;text-align:center}
+  .reset{
+    font-family:inherit;font-size:13px;font-weight:700;color:var(--muted);
+    background:none;border:1px solid var(--line);border-radius:100px;
+    padding:9px 20px;cursor:pointer;transition:all .2s;
+  }
+  .reset:hover{color:var(--pink);border-color:var(--pink)}
+  .sign{font-size:12.5px;color:var(--faint);margin-top:18px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">lili's<span class="dots"><i></i><i></i></span><small>CHALLENGE GUIDE</small></div>
+    <span class="eyebrow">チャレンジ企画 運営マニュアル</span>
+    <h1>3日間チャレンジ<br>やることリスト＆指南書</h1>
+    <div class="dates">
+      <span class="date-chip">準備　<b>開催3週間前から</b></span>
+      <span class="date-chip">開催　<b>3日間</b>（2日間や4日間でも同じ流れ）</span>
+      <span class="date-chip">ライブ　<b>毎晩21:00ごろ</b>が目安</span>
+    </div>
+    <p class="lead">はじめてでも、上から順番に1個ずつチェックしていけば開催できるように作りました。「なぜやるのか」も全部書いてあります。文例はそのままコピーして使えます。</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-pane="p1" type="button">やることリスト</button>
+    <button class="tab" data-pane="p2" type="button">準備物リスト</button>
+    <button class="tab" data-pane="p3" type="button">はじめての指南書</button>
+  </div>
+
+  <!-- ============ タブ1 やることリスト ============ -->
+  <div class="pane on" id="p1">
+    <div class="progress-card">
+      <div class="progress-top">
+        <span class="progress-label">いまの進み具合</span>
+        <span class="progress-count"><b id="pc-done">0</b> / <span id="pc-total">0</span> 個 完了</span>
+      </div>
+      <div class="bar"><div class="bar-fill" id="bar"></div></div>
+      <div class="cheer" id="cheer"></div>
+    </div>
+    <main id="list"></main>
+  </div>
+
+  <!-- ============ タブ2 準備物リスト ============ -->
+  <div class="pane" id="p2">
+    <div class="progress-card">
+      <div class="progress-top">
+        <span class="progress-label">準備物のそろい具合</span>
+        <span class="progress-count"><b id="pc2-done">0</b> / <span id="pc2-total">0</span> 個 完了</span>
+      </div>
+      <div class="bar"><div class="bar-fill" id="bar2"></div></div>
+    </div>
+    <main id="prep"></main>
+  </div>
+
+  <!-- ============ タブ3 指南書 ============ -->
+  <div class="pane" id="p3">
+
+    <div class="g-sec">
+      <h2><span class="g-num">1</span>企画の全体像 — 「3つの部屋」で運営する</h2>
+      <p class="g-sub">この形さえ覚えれば、日数やテーマが変わっても同じように開催できます</p>
+      <p>チャレンジ企画は、役割の違う3つの部屋を使い分けて運営します。1つの場所に全部を詰め込むと、個別対応も運営連絡も参加者に丸見えになってしまうためです。</p>
+      <div class="room">
+        <span class="room-tag omote">表</span>
+        <div class="room-body"><b>オープンチャット（参加者全員の部屋）</b>
+        自己紹介・課題提出・交流・ライブの告知はすべてここ。全員に見えるからこそ「みんなが頑張っている」熱量が生まれます。企画の主戦場です。</div>
+      </div>
+      <div class="room">
+        <span class="room-tag kobetsu">個別</span>
+        <div class="room-body"><b>専用LINE（1対1の窓口）</b>
+        あいことばの受付・特典の配布・個別の質問・最終日のご案内はすべてLINEで。誰が登録してくれたかを計測できるのもLINE側です。</div>
+      </div>
+      <div class="room">
+        <span class="room-tag ura">裏</span>
+        <div class="room-body"><b>運営・サポーターグループ（参加者から見えない部屋）</b>
+        「◯時に実績入りの自己紹介を投稿してください」など、盛り上げの段取りはすべてここで指示します。表の盛り上がりは、裏の段取りで作ります。</div>
+      </div>
+      <p>参加者の流れは、この一本道です。</p>
+      <div class="flow">
+        <span>告知・LP</span><i>→</i><span>オプチャ参加</span><i>→</i><span>自己紹介</span><i>→</i><span>LINE登録</span><i>→</i><span>3日間ライブ＋課題</span><i>→</i><span>最終日のご案内</span><i>→</i><span>LINEで個別相談</span>
+      </div>
+    </div>
+
+    <div class="g-sec">
+      <h2><span class="g-num">2</span>スケジュール早見表</h2>
+      <p class="g-sub">今日が何日前かを見て、該当の行から始めてください</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>時期</th><th>やること</th></tr>
+        <tr><td><span class="chip">3週間前</span></td><td>裏グループ作成／オプチャ作成・設定／専用LINEを決める／課題・あいことば・特典・ポイント制を決める</td></tr>
+        <tr><td><span class="chip">2週間前</span></td><td>バナー・LP・告知文の完成／サポーターへの依頼（投稿日時・内容）</td></tr>
+        <tr><td><span class="chip">1週間前</span></td><td>登壇者に内容を送付／リハーサル／LINE動線のテスト／オプチャに最初の投稿（ルール・テンプレ・あいさつ・ノート）</td></tr>
+        <tr><td><span class="chip">3〜4日前</span></td><td>告知配信スタート／入ってきた人の自己紹介に全返信</td></tr>
+        <tr><td><span class="chip">前日</span></td><td>リマインド配信／サポーターの実績入り自己紹介を投稿してもらう</td></tr>
+        <tr><td><span class="chip">開催3日間</span></td><td>やることリスト STEP7〜9 のとおり</td></tr>
+        <tr><td><span class="chip">翌日〜</span></td><td>お礼・質問スレッド・プレゼント発送・閉鎖予告→閉鎖</td></tr>
+      </table>
+      </div>
+    </div>
+
+    <div class="g-sec">
+      <h2><span class="g-num">3</span>熱量が生まれる「7つの仕掛け」</h2>
+      <p class="g-sub">実際の運営ログから抜き出した、成果に直結する仕掛けです</p>
+      <div class="shikake">
+        <div class="sk"><div class="sk-body"><b>自己紹介への全返信</b>
+        名前を呼ぶ→趣味に触れる→悩みに共感する→「この企画で解決できます」の順で、1人ずつ返します。「ちゃんと見てもらえている」と感じた人は途中で抜けません。ここに一番時間を使います。
+        <div class="sk-real">「学んでいるのに、なかなか最初のお仕事につながらないの、不安になりますよね。。それ、順番を変えるだけで解消できる方法、実はありますよー」のように、悩みの一歩先を予告して期待を作ります。</div></div></div>
+        <div class="sk"><div class="sk-body"><b>サポーターの「実績入り」自己紹介</b>
+        成果を数字で語れる先輩（卒業生・受講生）を5〜10名招待し、名前・趣味・受講歴・成果の数字・参加者へのひとことの型で投稿してもらいます。数字が並ぶと「私にもできるかも」が生まれます。
+        <div class="sk-real">過去開催では10名を一斉招待し、その日の夜だけで実績入りの自己紹介が8件並びました。投稿日時は裏グループで事前指定しています。</div></div></div>
+        <div class="sk"><div class="sk-body"><b>「欲しい表明」で小さなYesを取る</b>
+        参加者限定のオファーを、売り込む前に「こんなものがあったら欲しい方いますか？」と聞きます。「欲しいです」が並んでから限定数で販売すると、場の温度が一気に上がります。
+        <div class="sk-real">過去開催では「参加者限定の特別パック、欲しい方いますか？」→挙手が20件以上→「限定30個」で販売、という流れが使われています。</div></div></div>
+        <div class="sk"><div class="sk-body"><b>あいことば×リアタイ特典</b>
+        ライブの中でだけ「あいことば」を発表し、専用LINEに送ってもらいます。「あとで録画でいいや」の人をリアルタイム参加に引き上げ、同時にLINE登録も進みます。</div></div>
+        <div class="sk"><div class="sk-body"><b>ポイント制</b>
+        リアタイ参加・課題提出・仲間の課題へのコメント、の3つが全部ポイントになり、上位3名に豪華プレゼント。「積極的に参加して、与える人」が得をする設計を最初に宣言します。
+        <div class="sk-real">過去開催では総額30万円相当（高級お肉など）を用意し、課題提出の練習までポイント対象にしていました。</div></div></div>
+        <div class="sk"><div class="sk-body"><b>最終日の「アーカイブなし」宣言</b>
+        最終日だけは録画を残さないと昼に告知します。ご案内をする一番大事な日のリアタイ参加率を最大化する定番の一手です。</div></div>
+        <div class="sk"><div class="sk-body"><b>閉鎖予告</b>
+        終了後に「このオープンチャットは◯日に閉鎖します」と予告します。だらだら残すと熱が冷めます。期限を切ることで、迷っている人の決断も後押しできます。
+        <div class="sk-real">過去開催では閉鎖予告のあとに、参加表明・お申込の投稿が続きました。表明には1人ずつ丁寧に返信し、音声メッセージも効果的でした。</div></div></div>
+      </div>
+    </div>
+
+    <div class="g-sec">
+      <h2><span class="g-num">4</span>コピペで使える文例集</h2>
+      <p class="g-sub">実際の運営で使われた文面を、汎用の形に調整したものです。「コピー」を押すとそのまま使えます</p>
+
+      <div class="tpl" id="tpl-rule">
+        <div class="tpl-title">文例① ルール投稿<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>🌸 ルール 🌸
+
+・必ず自己紹介を書きましょう
+・営業禁止です🈲
+・積極的に参加しましょう！
+・他者に攻撃的なメッセージを送らないこと</pre>
+        <div class="tpl-use">オプチャを開いたら一番最初に投稿し、アナウンス登録（画面上部に固定）します。</div>
+      </div>
+
+      <div class="tpl" id="tpl-jiko">
+        <div class="tpl-title">文例② 自己紹介テンプレ<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>🌱 自己紹介 🌱
+
+・お名前（呼んでほしいニックネーム）
+・趣味
+・デザインの経験は？？（独学中／受講中／まだこれから など）
+・今お悩みのこと
+・この企画に期待すること</pre>
+        <div class="tpl-use">ルールの直後に投稿。参加者は空欄をうめるだけにしてあげるのがコツです。3つ目の項目は企画のテーマに合わせて変えます（例：SNS発信の経験は？？）。「まだこれから」も選べるようにしておくと、未経験の方も安心して書けます。</div>
+      </div>
+
+      <div class="tpl" id="tpl-aisatsu">
+        <div class="tpl-title">文例③ 開会のあいさつ（@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>皆さまっ！はじめまして✨
+今回の企画を主催させていただきます、◯◯と申します☺️
+
+ただ学んで終わり
+
+ですと、結果も出にくいですので
+せっかくなのでこちらで交流や
+サポートをさせていただきながら、成果も出せたらと思っております！
+
+ご参加特典のワークシートを使って、
+3日間課題に取り組みます🔥
+
+さてさて。。
+まずは自己紹介から皆さまお願いしますねっ！</pre>
+        <div class="tpl-use">投稿したらすぐ、主催者自身の自己紹介をテンプレどおりに書いて「見本」にします。最初の1つがあると皆が真似できます。</div>
+      </div>
+
+      <div class="tpl" id="tpl-line">
+        <div class="tpl-title">文例④ 専用LINEへの誘導（@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>【超重要】
+必ずすぐにご対応ください💡
+
+特典のお受け取りや
+サポートは、基本的に専用LINEで行います。
+
+＝＝＝＝＝＝＝
+① 以下のLINEに登録する
+
+▼LINEはこちら▼
+（LINEのURL）
+
+② 登録後、アンケートに回答する
+
+③ オープンチャットでのお名前を送る
+＝＝＝＝＝＝＝
+
+プレゼント🎁のご案内もLINEで行いますので、
+必ずご登録ください！</pre>
+        <div class="tpl-use">開催の数日前と、当日朝の2回。「オプチャでの名前を送ってもらう」ことで、LINEの友だちとオプチャの参加者を突き合わせできます。</div>
+      </div>
+
+      <div class="tpl" id="tpl-live">
+        <div class="tpl-title">文例⑤ ライブ開始の集合（@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>1日目スタートしましたー！！！
+
+▼こちらに集合▼
+（ライブのURL）</pre>
+        <div class="tpl-use">開始時刻ちょうどに投稿。短いほど良いです。事前の「今日の参加リンクはLINEで送ります」の予告も有効です。</div>
+      </div>
+
+      <div class="tpl" id="tpl-kadai">
+        <div class="tpl-title">文例⑥ 課題提出置き場（スレッド）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>【1日目課題提出置き場】
+
+〆切 : ◯月◯日（翌日）18:00まで
+添削も◯月◯日の18:00まで行います！</pre>
+        <div class="tpl-use">ライブ終了後すぐに投稿し、このメッセージへの返信（リプ）で提出してもらいます。「課題以外のやり取りは無しで」も添えると雑談化を防げます。</div>
+      </div>
+
+      <div class="tpl" id="tpl-remind">
+        <div class="tpl-title">文例⑦ 課題〆切リマインド（@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>【リマインド】
+1日目の課題締め切り、1時間を切りました！
+
+完璧じゃなくて大丈夫です🍀
+出してみることが、いちばんの練習です✨
+
+※配布ツールはLINEのブラウザで開くとエラーになることがあります。
+必ずSafariかChromeで開いてくださいね☺️</pre>
+        <div class="tpl-use">〆切1時間前に。よくあるつまずき（ツールの開き方など）の案内もここにまとめると問い合わせが減ります。</div>
+      </div>
+
+      <div class="tpl" id="tpl-archive">
+        <div class="tpl-title">文例⑧ 最終日の「アーカイブなし」告知（@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>⚠️超重要⚠️
+
+＝＝＝＝＝＝＝＝
+本日のライブは
+アーカイブを残しません！！
+＝＝＝＝＝＝＝＝
+
+最終日ですので、
+ぜひ奮ってリアタイ参加されてくださいませ☺️
+
+特大プレゼントのお話も
+いたしますーっ✨</pre>
+        <div class="tpl-use">最終日の昼〜14時ごろに投稿します。</div>
+      </div>
+
+      <div class="tpl" id="tpl-close">
+        <div class="tpl-title">文例⑨ 閉鎖予告（@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>ちなみに、このオープンチャットは
+◯日には閉鎖してしまいます。。</pre>
+        <div class="tpl-use">終了の翌日〜2日後に。この一言だけで十分です。閉鎖までの間が、個別相談・お申込表明のピークになります。</div>
+      </div>
+
+      <div class="tpl" id="tpl-hoshii">
+        <div class="tpl-title">文例⑩ 興味付け投稿（限定オファーの前フリ・@全員）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>ち、な、み、に
+
+（参加者限定オファーの内容。
+数字でメリットが伝わるように書きます）を
+特別にご用意できそうなのですが。。。
+
+欲しい方いますか？？🤔
+
+※欲しいと表明した方にだけ
+ご案内できるようにしようと思ってます</pre>
+        <div class="tpl-use">開催の1週間ほど前に。「欲しいです」が並んでから「限定◯名（◯個）」でご案内を出します。詳しい活用方法はライブで伝えると予告し、企画への期待にもつなげます。</div>
+      </div>
+
+      <div class="tpl" id="tpl-henshin">
+        <div class="tpl-title">文例⑪ 自己紹介への返信（型）<button class="tpl-copy" type="button">コピー</button></div>
+        <pre>@◯◯さん、はじめましてー！
+
+（趣味へのひとこと。例：カフェめぐりお好きなのですねっ！お仲間ですね✨）
+
+（悩みへの共感。例：学んでいるのにお仕事につながらないの、焦りますよね。。）
+
+（解決の予告。例：お仕事につながる“順番”を知るだけで、ぐっと変わりますよー！）</pre>
+        <div class="tpl-use">全員に返します。名前を呼ぶ→趣味に触れる→悩みに共感→「この企画で解決できる」の順。質問を1つ入れると会話が続きます。</div>
+      </div>
+    </div>
+
+    <div class="g-sec">
+      <h2><span class="g-num">5</span>オープンチャットの設定手順</h2>
+      <p class="g-sub">LINEアプリの「オープンチャット」から作成します。荒れ防止の要は権限設定です</p>
+      <p><b>作成の流れ</b></p>
+      <ul>
+        <li>LINEアプリ → ホーム → オープンチャット → 作成</li>
+        <li><b>名前</b>：企画名をそのまま（例：3日間チャレンジ🔥）</li>
+        <li><b>説明文</b>：日程・内容・ルールの要約・参加特典を記載</li>
+        <li><b>アイコン／背景</b>：作成したバナー画像を設定（入口の見た目で「ちゃんとした企画」と伝わります）</li>
+        <li><b>公開設定</b>：検索結果に表示しない。告知リンクからだけ入れるようにします</li>
+        <li><b>参加方法</b>：承認制 または 参加コード（あいことば）方式。関係ない人の入室を防ぎます</li>
+        <li><b>定員</b>：想定人数より多めに設定（あとから「設定 → 権限」の「トークの定員数を変更」で調整できます）</li>
+      </ul>
+      <p><b>権限設定（設定 → 権限）</b>　参加者が勝手に操作できないよう、すべて管理者側に寄せます。</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>項目</th><th>設定値</th></tr>
+        <tr><td>サブトークルームを作成</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>トークの定員数を変更</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>ノートを作成</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>アナウンスを登録</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>メッセージ・ノートを削除</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>メンバーの強制退会</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>全員をメンション（@All）</td><td><b>管理者・共同管理者</b></td></tr>
+        <tr><td>その他のトーク機能</td><td>「権限を設定」から同じく管理者側に</td></tr>
+      </table>
+      </div>
+      <p><b>スタッフを共同管理者にする</b>　設定 → メンバー管理 から任命します。メッセージ削除・固定・@Allを分担でき、1人で全部見なくてよくなります。</p>
+      <p><b>よく使う機能</b></p>
+      <ul>
+        <li><b>アナウンス（固定）</b>：ルールと大事な告知は画面上部に固定します</li>
+        <li><b>ノート</b>：「進め方まとめ」を1枚に。読んだ人にはリアクションスタンプを押してもらうと、既読の把握とポイント付与を兼ねられます</li>
+        <li><b>投票</b>：「朝のラジオ配信、聞きたい方？」など、企画の追加はニーズを聞いてから。参加させる仕掛けにもなります</li>
+        <li><b>スレッド（リプ）</b>：課題提出・練習用・雑談・質問箱は、それぞれ親メッセージへの返信形式でまとめます</li>
+      </ul>
+    </div>
+
+    <div class="g-sec">
+      <h2><span class="g-num">6</span>専用LINE側の準備</h2>
+      <p class="g-sub">オプチャが「表」なら、LINEは成果につながる「個別」の動線です</p>
+      <ul>
+        <li><b>使うアカウント</b>：新しく作らず、既存のlili's公式LINE（エルメ）をそのまま使うのがおすすめです。新規だと「また登録」の手間が増えます。企画のやり取りだけ分けて管理したい場合のみ新規で</li>
+        <li><b>タグで見分ける</b>：チャレンジ用の登録QR（または流入経路）に「流入経路_チャレンジ◯月」のタグを自動で付けておくと、あとで参加者だけに絞って一斉送信・個別相談のご案内ができます</li>
+        <li><b>登録動線</b>：①LINE登録 → ②アンケート回答 → ③オプチャでの名前を送ってもらう、の3ステップを必ず案内します（文例④）。③でLINE友だちとオプチャ参加者を突き合わせできます</li>
+        <li><b>アンケート</b>：現状（経験・悩み・目標）を聞いておくと、ライブの内容と最終日のご案内が刺さりやすくなります</li>
+        <li><b>あいことば受付</b>：ライブ中に発表したあいことばをLINEに送ってもらい、リアタイ参加を記録します</li>
+        <li><b>特典の配布</b>：配布はすべてLINEから。オプチャにURLを貼ると管理できなくなります</li>
+        <li><b>質問対応</b>：オプチャに個別質問が来たら「ご質問はLINEにお願いしますね」で毎回LINEへ誘導します</li>
+      </ul>
+      <p>エルメでの具体的な操作（あいさつメッセージ・特典配布・自動タグ・一斉送信・ステップ配信）は、エルメ運用マニュアルに画面つきでまとめています。</p>
+      <p><a href="https://kumiko0814.github.io/lili-erume-manual/" target="_blank" rel="noopener">エルメ運用マニュアルを開く</a></p>
+    </div>
+
+    <div class="g-sec">
+      <h2><span class="g-num">7</span>つまずきポイント集</h2>
+      <p class="g-sub">実際の運営で起きたことと、その対処です。先回りしておくと当日が静かになります</p>
+      <div class="warn"><b>ツールがLINEのブラウザで開けない。</b>　Webツールを配布する場合、LINE内ブラウザだとエラーになることがあります。「必ずSafariかChromeで開いてください」を配布時とリマインドの両方に入れておきます。</div>
+      <div class="warn"><b>個別質問がオプチャに来る。</b>　1件対応すると全部オプチャに来るようになります。「ご質問はLINEにお願いしますね」で、例外なくLINEへ。</div>
+      <div class="warn"><b>一度退会した人が戻れない。</b>　オープンチャットは退会すると同じアカウントで再入室できない設定にできます。「一度退会すると再入室できません」を期間中に2回は告知しておきます。</div>
+      <div class="warn"><b>開始時間の変更が伝わらない。</b>　@Allで告知した上で「お時間了解の方はこの投稿にリアクションスタンプを押してください」と添えると、届いたかどうかが見えます。</div>
+      <div class="warn"><b>課題スレッドが雑談になる。</b>　「課題以外のやり取りは無しでお願いします」を課題スレッドの1通目に明記し、雑談は雑談スレッドへ分けます。</div>
+      <div class="warn"><b>「ライブを見てから決めたい」と言われる。</b>　限定オファーは〆切で線を引きます。実際の運営では「締め切り後のご案内はできません」「できそうだからやる、では効果は出ません。成果を出すためにライブとサポートがあります」と毅然と、かつ優しく対応していました。</div>
+      <div class="warn"><b>提出をためらう人が出る。</b>　「完璧じゃなくて大丈夫、出してみることがいちばんの練習」を合言葉に。提出した人にはサポーターがすぐ褒めのコメントを入れる、と裏グループで決めておきます。</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <button class="reset" id="reset" type="button">チェックを全部リセットする</button>
+    <p class="sign">チェックはこの端末に自動で保存されます</p>
+  </footer>
+</div>
+
+<script>
+const STEPS = [
+  { num:"1", title:"部屋を3つつくる", when:"開催3週間前まで", tasks:[
+    { do:"運営・サポーター用の「裏LINEグループ」を作る",
+      why:"本番中に運営どうしで段取りする、参加者から見えない部屋です。盛り上げの指示はすべてここで行います。" },
+    { do:"裏グループで、サポーターに「やってほしいこと」を先に伝える",
+      why:"実績数字入りの自己紹介の投稿日時、参加者の投稿への反応を事前にお願いしておくと、当日の場が自然に盛り上がります。",
+      eg:"伝えること：例）「前日の20時に、成果の数字を入れた自己紹介を投稿してください」「参加者の課題投稿にスタンプとひとことで反応してください」" },
+    { do:"盛り上げ・添削サポートのメンバー（受講生・卒業生）を確保する（参加者数の15％＝100人なら15人が目安）",
+      why:"チャレンジを盛り上げ、課題の添削サポートをするメンバーが不足すると「見てもらえている」空気が作れず、参加者が離脱してしまいます。参加者数の15％を目安に、告知前に頭数を押さえておきます。" },
+    { do:"参加者用の「オープンチャット」を作る",
+      why:"自己紹介・課題・交流が行われる表の部屋で、企画の主戦場です。作り方と設定は指南書の5番にまとめました。",
+      ref:"5" },
+    { do:"質問・特典配布用の「専用LINE」を決める",
+      why:"あいことばの受付、特典の配布、個別の質問はすべて1対1のLINEで行います。登録者の計測もLINE側の役割です。",
+      note:"おすすめは<b>新しく作らず、既存の公式LINEをそのまま使う</b>ことです。新規で作ると「また登録」の手間が増えてしまいます。企画のやり取りだけ分けて管理したいときだけ新規で作ってください。",
+      ref:"6" },
+  ]},
+  { num:"2", title:"オープンチャットを設定する", when:"作ったらすぐ", tasks:[
+    { do:"名前・説明文・アイコンを設定する",
+      why:"入口の見た目が整っていると「ちゃんとした企画」と安心して入ってもらえます。",
+      eg:"名前：企画名をそのまま　説明文：日程・内容・ルールの要約・参加特典" },
+    { do:"公開設定と参加方法を決める",
+      why:"誰でも入れる公開状態だと関係ない人が入ってきます。検索結果に表示しない設定にして、告知リンクからだけ入れるようにします。",
+      eg:"参加方法：承認制 または 参加コード（あいことば）方式" },
+    { do:"権限をすべて「管理者・共同管理者」に設定する",
+      why:"参加者が勝手にノートやアナウンスを作ったり、サブトークルームを乱立させたりできないようにします。荒れ防止の要です。",
+      eg:"設定 → 権限 で7項目すべてを変更（サブトークルーム作成／定員数変更／ノート作成／アナウンス登録／メッセージ・ノート削除／強制退会／@All）",
+      ref:"5" },
+    { do:"運営スタッフを「共同管理者」に任命する",
+      why:"1人で全部見るのは大変です。削除・固定・@Allなどの操作を分担できるようにします。設定 → メンバー管理 から任命します。" },
+    { do:"トークの定員数を確認する",
+      why:"定員が少ないままだと、告知が当たったときに途中で入れなくなります。想定人数より余裕を持たせておきます。" },
+    { do:"オプチャのバナー（表紙画像）を作って設定する",
+      why:"参加者が最初に見るのは入口の画像です。AI生成でOK。企画名・日程・「参加無料」が読めるものにします。" },
+  ]},
+  { num:"3", title:"中身を決める", when:"3週間前〜2週間前", tasks:[
+    { do:"3日間で話すことを箇条書きで書き出す",
+      why:"当日「何を話そう」で止まらないためです。きれいな台本でなくてOK、話す順番だけ決まっていれば大丈夫です。",
+      eg:"例：1日目 選ばれる自己紹介（マイストーリー）をつくる／2日目 自分に合った場所でアピールしてみる／3日目 まとめ＋ベスト3発表＋次のご案内" },
+    { do:"各日の「あいことば」とリアタイ特典を決める",
+      why:"ライブの中でだけ発表して専用LINEに送ってもらう仕組みです。「あとで録画でいいや」を防いで、その時間に見てもらえます。" },
+    { do:"各日の課題を1つずつ決める（〆切は翌日18:00）",
+      why:"見るだけで終わらせず、実際に手を動かしてもらうためです。1日1個がちょうどいい量です。添削の〆切も同時に決めます。" },
+    { do:"ポイント制のルールを決める",
+      why:"リアタイ参加・課題提出・仲間へのコメントが全部ポイントになると、参加者の行動すべてに理由が生まれます。「与える人が得をする」設計です。",
+      eg:"例：ポイント上位3名に豪華プレゼント（過去開催では総額30万円相当）" },
+    { do:"限定オファー（参加者限定のご案内）をやるか決める",
+      why:"期間中に「欲しい方いますか？」と聞いて、挙手した人にだけ限定数でご案内する流れが鉄板です。小さなYesが場の温度を上げます。",
+      ref:"tpl-hoshii" },
+    { do:"配信方法とアーカイブの扱いを決める",
+      why:"YouTubeライブ（限定公開）が手軽です。最終日だけアーカイブを残さない、を先に決めておきます。" },
+  ]},
+  { num:"4", title:"登壇者とLINEの準備", when:"1週間前まで", tasks:[
+    { do:"登壇者に「話してほしい内容」と「インタビューで聞くこと」を送る",
+      why:"事前に渡すほど登壇者が準備でき、当日の内容もブレません。直前に渡すと登壇者が困ってしまうので、早めがやさしいです。" },
+    { do:"必要なら登壇者とリハーサルする",
+      why:"不安そうなら1回つないで流してみるだけでOKです。本番でスムーズに話せて、登壇者も安心できます。" },
+    { do:"専用LINEの中身を整えて、動線をテストする",
+      why:"登録 → アンケート → オプチャ名の送信 → 特典受け取り、を自分のスマホで一度通しでやってみます。本番前に穴が見つかります。",
+      eg:"用意するもの：あいさつメッセージ／アンケート／あいことば受付の返信／特典の配布メッセージ／チャレンジ参加者タグ",
+      ref:"6" },
+  ]},
+  { num:"5", title:"オプチャに最初の投稿をする", when:"参加者を招待する前に・この順番で", tasks:[
+    { do:"①ルールを投稿して、アナウンスで固定する",
+      why:"最初にルールがあると場が荒れません。開いてすぐ投稿して固定します。",
+      ref:"tpl-rule" },
+    { do:"参加者へのルール説明の「しおりバナー」を作って、ルールと一緒に固定する",
+      why:"日程・ルール・特典を1枚の画像にまとめておくと、参加者がスクロールせずに「何を・いつ・何をもらえるか」を一目で理解できます。文字だけよりも安心して参加してもらえます。AI生成でもOK、下の見本くらい見やすくかわいく作ります。",
+      note:"完成イメージ：<br><img src='rules-banner-sample.jpg' alt='参加者ルール説明バナーの見本' style='width:100%;max-width:380px;border-radius:12px;margin-top:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);'>" },
+    { do:"②自己紹介テンプレを投稿する",
+      why:"型を出すと参加者が迷わず書けます。空欄をうめるだけにしてあげるのがコツです。",
+      ref:"tpl-jiko" },
+    { do:"③開会のあいさつを送る（@全員）",
+      why:"主催者として「学んで終わりにしない、一緒に成果を出す」と伝え、「まずは自己紹介から」と最初の一歩をうながします。",
+      ref:"tpl-aisatsu" },
+    { do:"④自分の自己紹介を「見本」として先に書く",
+      why:"最初の1つがあると、参加者が真似して書きやすくなります。テンプレに沿って、一番最初に書きます。" },
+    { do:"⑤ノートに「進め方まとめ」を書く",
+      why:"不安の正体は「全体像が見えない」ことです。日程・課題・あいことば・ポイントのルールをノート1枚にまとめ、「読んだらリアクションスタンプを押してください」と添えます。既読の把握とポイント付与を兼ねられます。" },
+  ]},
+  { num:"6", title:"集めて、迎える（ここが一番大事）", when:"3〜4日前〜前日", tasks:[
+    { do:"配信・広告でオプチャへ招待する",
+      why:"①日時 ②内容 ③参加するといいこと ④入り方（リンク）を1回で伝えます。前日には「明日の夜21時からです」のリマインドも送ります。" },
+    { do:"専用LINEへの登録を@全員で案内する（3ステップ）",
+      why:"①LINE登録 ②アンケート回答 ③オプチャでの名前を送る、をセットで案内します。③でLINEの友だちとオプチャの参加者を突き合わせできます。",
+      ref:"tpl-line" },
+    { do:"参加者の自己紹介に、1人ずつ返信する",
+      why:"名前を呼んで・趣味に触れて・悩みに共感して「この企画で解決できます」と伝えます。「ちゃんと見てもらえている」と感じた人は途中で抜けません。ここに一番時間を使います。",
+      ref:"tpl-henshin" },
+    { do:"サポーターに、実績入りの自己紹介を投稿してもらう",
+      why:"成果（数字）入りの自己紹介が並ぶと、参加者に「私にもできるかも」の憧れと信頼が生まれます。裏グループで投稿日時を指定しておきます。",
+      eg:"型：名前／趣味／受講歴／成果の数字／参加者へのひとこと" },
+    { do:"興味付け投稿をする（限定オファーをやる場合）",
+      why:"「欲しい方いますか？」→「欲しいです」の挙手が並ぶと、場の温度が一気に上がります。詳しくはライブで伝えると予告し、企画への期待にもつなげます。",
+      ref:"tpl-hoshii" },
+    { do:"注意事項を告知する",
+      why:"先に伝えておくと当日の問い合わせが減ります。",
+      eg:"「一度退会すると再入室できません」「配布ツールは必ずSafariかChromeで開いてください」" },
+  ]},
+  { num:"7", title:"1日目 当日", when:"", tasks:[
+    { do:"朝：LINE未登録の人へ最終リマインド（@全員）",
+      why:"特典の受け取りとあいことばの送信はLINEが窓口です。当日朝が最後の回収チャンスです。" },
+    { do:"昼：特典配布の予告とポイント制の再告知",
+      why:"「今日の18時にLINEで配ります」「リアタイ参加・課題提出・仲間へのコメントがポイントになります」を再度伝え、夜への期待を作ります。" },
+    { do:"「練習用スレッド」を立てて、課題提出の練習をしてもらう",
+      why:"本番の提出でつまずかないためです。「練習もちゃんとポイントになります」と伝えると全員やってくれます。" },
+    { do:"開始時刻ちょうどにライブURLを投稿する（@全員）",
+      why:"スマホに通知が出て、その時間に来てもらえます。短く「こちらに集合」だけでOKです。",
+      ref:"tpl-live" },
+    { do:"ライブをやる＋今日のあいことばを発表する",
+      why:"あいことばはライブの中でだけ発表し、専用LINEに送ってもらいます。リアルタイムで見た人だけの特典です。" },
+    { do:"ライブ後：「1日目課題提出置き場」スレッドを立てる",
+      why:"提出場所を1つにまとめます。〆切（翌日18:00）と添削の期限も書いておきます。",
+      ref:"tpl-kadai" },
+    { do:"「雑談スレッド」を立てる",
+      why:"雑談の場所を分けておくと、課題スレッドが流れません。" },
+  ]},
+  { num:"8", title:"2日目 当日", when:"", tasks:[
+    { do:"〆切1時間前に課題のリマインドを送る（@全員）",
+      why:"〆切前の一押しで提出が伸びます。「完璧じゃなくて大丈夫です」の一言もセットで。",
+      ref:"tpl-remind" },
+    { do:"提出された課題に、添削と褒めのコメントを入れる",
+      why:"「ちゃんと見てもらえている」と伝わると2日目も頑張れます。サポーターにも裏グループで反応をお願いします。" },
+    { do:"夜：ライブ＋あいことば発表",
+      why:"1日目と同じ流れでOKです。" },
+    { do:"ライブ後：「2日目課題提出置き場」スレッドを立てる",
+      why:"〆切は翌日18:00。毎日同じ形にすると参加者が迷いません。" },
+    { do:"変更があれば@全員＋リアクションで確認する",
+      why:"開始時間の変更などは、@全員で告知した上で「了解の方はこの投稿にリアクションスタンプを押してください」と添えると、届いたかが見えます。" },
+  ]},
+  { num:"9", title:"3日目（最終日）当日", when:"", tasks:[
+    { do:"昼：「本日はアーカイブを残しません」を告知する（@全員）",
+      why:"ご案内をする一番大事な日のリアタイ参加率を最大化する定番の一手です。特大プレゼントの予告もセットで。",
+      ref:"tpl-archive" },
+    { do:"〆切1時間前に2日目課題のリマインド",
+      why:"2日目と同じです。" },
+    { do:"夜：最終ライブ（まとめ＋ベスト3発表＋次のご案内）",
+      why:"チャレンジで気持ちが温まった人が次に進める道を、熱が一番高い瞬間に渡します。",
+      eg:"例：個別相談（キャリア相談）の枠・お申込特典の発表" },
+    { do:"ライブ後：最終課題スレッドを立てる",
+      why:"最後まで同じ形で締めます。" },
+  ]},
+  { num:"10", title:"終わったあと", when:"翌日〜2日後", tasks:[
+    { do:"参加のお礼と「質問スレッド」を立てる",
+      why:"最後まで気持ちよく終わってもらうためです。「講座について、講師や受講生に聞いてみたいこと」の質問箱が、検討中の人の背中を押します。" },
+    { do:"ポイント上位3名にプレゼントの案内をする",
+      why:"「動いた人が得をした」と全員に見える形で発表します。" },
+    { do:"お申込・参加表明への返信を、1人ずつ丁寧にする",
+      why:"表明した人の不安に1つずつ答えます。音声メッセージも気持ちが伝わって効果的です。" },
+    { do:"オプチャの閉鎖を予告して、閉鎖する",
+      why:"だらだら残すと熱が冷めます。「◯日に閉鎖します」の期限が、迷っている人の決断を後押しします。予告から閉鎖までが個別相談のピークです。",
+      ref:"tpl-close" },
+  ]},
+];
+
+const PREP = [
+  { num:"A", title:"アカウント・場所（3つの部屋）", items:[
+    { do:"オープンチャット", eg:"名前・説明文・バナー・権限設定まで済んだ状態（やることリストSTEP2）" },
+    { do:"専用の公式LINE（エルメ）", eg:"あいさつ・アンケート・あいことば受付・特典配布・参加者タグの設定込み" },
+    { do:"運営・サポーター用の裏LINEグループ" },
+    { do:"ライブ配信環境", eg:"YouTubeライブ（限定公開）または Zoom。スマホでも可" },
+  ]},
+  { num:"B", title:"クリエイティブ", items:[
+    { do:"オプチャのバナー（表紙画像）" },
+    { do:"告知用バナー画像", eg:"企画名・日程・参加無料が読めるもの。AI生成でOK" },
+    { do:"LP（申込ページ）", eg:"なくても開催はできますが、広告や配信から集める場合は必須" },
+    { do:"告知配信文", eg:"3〜4日前・前日・当日朝の3本" },
+  ]},
+  { num:"C", title:"コンテンツ", items:[
+    { do:"3日分の講義内容の箇条書き" },
+    { do:"課題 ×3（1日1個）", eg:"〆切は翌日18:00" },
+    { do:"あいことば ×3", eg:"ライブ内でだけ発表 → 専用LINEへ送信" },
+    { do:"ルール文・自己紹介テンプレ・開会あいさつ", eg:"指南書の文例①〜③をコピーして使えます" },
+    { do:"ノート「進め方まとめ」の下書き", eg:"日程・課題・あいことば・ポイントのルールを1枚に" },
+  ]},
+  { num:"D", title:"特典・プレゼント", items:[
+    { do:"参加特典", eg:"課題で毎日使えるもの（マイストーリーのワークシート・自己紹介テンプレート・デザインの見本集など）が理想" },
+    { do:"リアタイ特典（あいことばのプレゼント）" },
+    { do:"ポイント上位3名へのプレゼント", eg:"過去開催では総額30万円相当（高級お肉など）" },
+    { do:"限定オファー（やる場合）", eg:"「欲しい表明」した人にだけ限定数でご案内" },
+    { do:"次のご案内（最終日に発表する特典）", eg:"お申込特典・個別相談の枠など" },
+  ]},
+  { num:"E", title:"人", items:[
+    { do:"登壇者（1〜3日目）", eg:"話す内容とインタビュー項目は1週間前までに共有" },
+    { do:"成果を数字で語れるサポーター 5〜10名", eg:"卒業生・受講生など、変化を数字で言える人" },
+    { do:"運営スタッフ（共同管理者） 2名以上", eg:"返信・削除・固定・@Allを分担" },
+  ]},
+];
+
+const CHECK = '<svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>';
+const KEY = "lili-challenge-todo-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; }
+
+/* タブ */
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("on"));
+    document.querySelectorAll(".pane").forEach(p=>p.classList.remove("on"));
+    btn.classList.add("on");
+    document.getElementById(btn.dataset.pane).classList.add("on");
+    window.scrollTo({top:0});
+  });
+});
+
+/* 指南書へのジャンプ */
+function jumpGuide(ref){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("on"));
+  document.querySelectorAll(".pane").forEach(p=>p.classList.remove("on"));
+  document.querySelector('.tab[data-pane="p3"]').classList.add("on");
+  document.getElementById("p3").classList.add("on");
+  if(ref.startsWith("tpl-")){
+    setTimeout(()=>{ document.getElementById(ref).scrollIntoView({behavior:"smooth",block:"center"}); },60);
+  }else{
+    const secs = document.querySelectorAll("#p3 .g-sec");
+    const idx = parseInt(ref,10)-1;
+    if(secs[idx]) setTimeout(()=>{ secs[idx].scrollIntoView({behavior:"smooth",block:"start"}); },60);
+  }
+}
+
+/* タブ1 checklist */
+const list = document.getElementById("list");
+let total = 0;
+STEPS.forEach((step, si) => {
+  const sec = document.createElement("section");
+  sec.className = "step";
+  const when = step.when ? `<div class="step-when">${step.when}</div>` : "";
+  sec.innerHTML = `<div class="step-head"><div class="step-num">${step.num}</div>
+    <div><h2 class="step-title">${step.title}</h2>${when}</div></div>`;
+  step.tasks.forEach((t, ti) => {
+    const id = `s${si}t${ti}`;
+    total++;
+    const done = state[id] ? " done" : "";
+    const eg = t.eg ? `<div class="t-eg">${t.eg}</div>` : "";
+    const note = t.note ? `<div class="t-note">${t.note}</div>` : "";
+    const ref = t.ref ? `<span class="t-ref" data-ref="${t.ref}">${t.ref.startsWith("tpl-") ? "文例を見る" : "指南書 "+t.ref+"番を見る"}</span>` : "";
+    const el = document.createElement("div");
+    el.className = "task" + done;
+    el.tabIndex = 0;
+    el.dataset.id = id;
+    el.setAttribute("role","checkbox");
+    el.setAttribute("aria-checked", state[id] ? "true":"false");
+    el.innerHTML = `<div class="box">${CHECK}</div>
+      <div class="t-body"><div class="t-do">${t.do}</div>
+      <div class="t-why">${t.why}</div>${eg}${note}${ref}</div>`;
+    el.addEventListener("click", (ev) => {
+      if(ev.target.classList.contains("t-ref")){ ev.stopPropagation(); jumpGuide(ev.target.dataset.ref); return; }
+      toggle(el);
+    });
+    el.addEventListener("keydown", e => {
+      if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggle(el); }
+    });
+    sec.appendChild(el);
+  });
+  list.appendChild(sec);
+});
+document.getElementById("pc-total").textContent = total;
+
+/* タブ2 準備物 */
+const prep = document.getElementById("prep");
+let total2 = 0;
+PREP.forEach((grp, gi) => {
+  const sec = document.createElement("section");
+  sec.className = "step";
+  sec.innerHTML = `<div class="step-head"><div class="step-num">${grp.num}</div>
+    <div><h2 class="step-title">${grp.title}</h2></div></div>`;
+  grp.items.forEach((t, ti) => {
+    const id = `p${gi}i${ti}`;
+    total2++;
+    const done = state[id] ? " done" : "";
+    const eg = t.eg ? `<div class="t-eg">${t.eg}</div>` : "";
+    const el = document.createElement("div");
+    el.className = "task" + done;
+    el.tabIndex = 0;
+    el.dataset.id = id;
+    el.setAttribute("role","checkbox");
+    el.setAttribute("aria-checked", state[id] ? "true":"false");
+    el.innerHTML = `<div class="box">${CHECK}</div>
+      <div class="t-body"><div class="t-do">${t.do}</div>${eg}</div>`;
+    el.addEventListener("click", () => toggle(el));
+    el.addEventListener("keydown", e => {
+      if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggle(el); }
+    });
+    sec.appendChild(el);
+  });
+  prep.appendChild(sec);
+});
+document.getElementById("pc2-total").textContent = total2;
+
+function toggle(el){
+  const id = el.dataset.id;
+  const now = !el.classList.contains("done");
+  el.classList.toggle("done", now);
+  el.setAttribute("aria-checked", now ? "true":"false");
+  state[id] = now;
+  localStorage.setItem(KEY, JSON.stringify(state));
+  render();
+}
+
+function render(){
+  const done = STEPS.reduce((n,step,si)=>
+    n + step.tasks.reduce((m,_,ti)=> m + (state[`s${si}t${ti}`]?1:0),0),0);
+  document.getElementById("pc-done").textContent = done;
+  document.getElementById("bar").style.width = (done/total*100)+"%";
+  const pct = done/total;
+  const cheer = document.getElementById("cheer");
+  if(done===0) cheer.textContent = "";
+  else if(pct>=1) cheer.textContent = "全部完了です。おつかれさまでした。準備ばんたんです";
+  else if(pct>=.75) cheer.textContent = "あと少しです。ここまで来たら、準備はほぼ完了です";
+  else if(pct>=.4) cheer.textContent = "いい調子です。この調子で1個ずつ";
+  else cheer.textContent = "スタートできました。ここからで大丈夫です";
+
+  const done2 = PREP.reduce((n,grp,gi)=>
+    n + grp.items.reduce((m,_,ti)=> m + (state[`p${gi}i${ti}`]?1:0),0),0);
+  document.getElementById("pc2-done").textContent = done2;
+  document.getElementById("bar2").style.width = (done2/total2*100)+"%";
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+  if(!confirm("チェックを全部リセットします。よろしいですか？")) return;
+  state = {};
+  localStorage.removeItem(KEY);
+  document.querySelectorAll(".task").forEach(el=>{
+    el.classList.remove("done"); el.setAttribute("aria-checked","false");
+  });
+  render();
+});
+
+/* 文例コピー */
+document.querySelectorAll(".tpl-copy").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const pre = btn.closest(".tpl").querySelector("pre");
+    navigator.clipboard.writeText(pre.textContent).then(()=>{
+      const old = btn.textContent; btn.textContent = "コピーしました";
+      setTimeout(()=>{ btn.textContent = old; },1400);
+    }).catch(()=>{
+      const r = document.createRange(); r.selectNodeContents(pre);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    });
+  });
+});
+
+render();
+</script>
+<!-- バグ報告ツール -->
+<style>
+#bugL{position:fixed; left:12px; bottom:16px; z-index:59; background:var(--surface); border:1px solid var(--line); color:var(--faint); font-size:10.5px; font-weight:800; border-radius:999px; padding:5px 12px; cursor:pointer; letter-spacing:.04em;}
+#bugM{position:fixed; inset:0; background:rgba(58,55,66,.55); display:none; align-items:center; justify-content:center; z-index:70; padding:24px;}
+#bugM.on{display:flex;}
+#bugM .bx{background:var(--surface); border-radius:20px; padding:22px 20px; max-width:360px; width:100%;}
+#bugM h3{font-size:14.5px; color:var(--ink); margin:0 0 8px;}
+#bugM textarea{width:100%; border:1.5px solid var(--line); border-radius:12px; padding:11px 13px; font-size:14px; line-height:1.8; color:var(--ink); background:var(--surface2); font-family:inherit; min-height:100px; resize:vertical;}
+#bugM .bb{display:flex; gap:8px; margin-top:12px;}
+#bugM button{flex:1; border:none; border-radius:999px; padding:11px; font-size:13px; font-weight:800; cursor:pointer; font-family:inherit;}
+#bugM .s{background:linear-gradient(135deg,var(--pink),var(--grad2)); color:#fff;}
+#bugM .c{background:var(--line2); color:var(--ink);}
+#bugM .done{display:none; font-size:12.5px; color:var(--pink); font-weight:800; margin-top:8px; text-align:center;}
+</style>
+<div id="bugL">不具合を報告</div>
+<div id="bugM"><div class="bx">
+  <h3>不具合・気になったことを教えてください</h3>
+  <textarea id="bugT" placeholder="例）チェックを押しても反応しませんでした（iPhone/Safari）"></textarea>
+  <div class="bb"><button class="c" id="bugC" type="button">閉じる</button><button class="s" id="bugS" type="button">送信する</button></div>
+  <div class="done" id="bugD">届きました。ありがとうございます。すぐ確認します。</div>
+</div></div>
+<script>
+(function(){
+var U="https://inrvprlyobghviklulcv.supabase.co/rest/v1/ailab_notes";
+var K="sb_publishable_ZrCNcsRHMci-l7Fns8QtIA_X22XZGJp";
+var M=document.getElementById("bugM");
+document.getElementById("bugL").onclick=function(){ M.classList.add("on"); };
+document.getElementById("bugC").onclick=function(){ M.classList.remove("on"); document.getElementById("bugD").style.display="none"; };
+document.getElementById("bugS").onclick=function(){
+  var t=document.getElementById("bugT").value.trim();
+  if(!t){ document.getElementById("bugT").focus(); return; }
+  var btn=this; btn.disabled=true;
+  function done(){
+    document.getElementById("bugD").style.display="block";
+    document.getElementById("bugT").value=""; btn.disabled=false;
+    setTimeout(function(){ M.classList.remove("on"); document.getElementById("bugD").style.display="none"; },1800);
+  }
+  fetch(U,{method:"POST",headers:{apikey:K,Authorization:"Bearer "+K,"Content-Type":"application/json"},
+    body:JSON.stringify({member_id:"bug_lili-challenge",member_name:"lili'sチャレンジ指南書",mood:"バグ報告",worry:t,want:location.href.slice(0,180)+" ／ "+navigator.userAgent.slice(0,140)})})
+    .then(function(){ done(); }).catch(function(){ btn.disabled=false; alert("送信できませんでした。通信環境をご確認ください。"); });
+};
+})();
+</script>
+</body>
+</html>
